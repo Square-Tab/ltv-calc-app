@@ -1,7 +1,32 @@
-/* Empty. Add your own CSS if you like */
+/**
+ * Fonts
+ */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Montserrat-Bold'), url('../fonts/Montserrat-Bold.ttf') format('truetype'), url('../fonts/Montserrat-Bold.wofw') format('woff2'), url('../fonts/Montserrat-Bold.woff') format('woff');
+}
+
+.font_montserrat {
+	font-family: 'Montserrat', sans-serif;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('OpenSans-Regular'), url('../fonts/OpenSans-Regular.ttf') format('truetype'), url('../fonts/OpenSans-Regular.woff') format('woff');
+}
+
+.font_opensans {
+	font-family: 'OpenSans', sans-serif;
+}
+
+/* ------------------------------- END OF FONTS ----------------------------- */
 
 .calc_header {
-	background-color: #484746;
+	background-color: #484848;
 }
 
 .calc_header h1 {
@@ -10,10 +35,8 @@
 }
 
 .calc_subheader {
-	background-color: #f5f6f7;
-	-webkit-box-shadow: 0px 1px 4px -1px #b9b9b9;
-	-moz-box-shadow: 0px 1px 4px -1px #b9b9b9;
-	box-shadow: 0px 1px 4px -1px #b9b9b9;
+	background-color: #fafafa;
+	border-bottom: 1px solid #c6c6c6;
 }
 
 .calc_subheader .row {
@@ -40,12 +63,12 @@
 
 .calc_subheader_btn {
 	background-color: #f5f6f7 !important;
-	color: #1992d1 !important;
-	border-color: #1992d1 !important;
+	color: #0f92d1 !important;
+	border-color: #0f92d1 !important;
 }
 
 .calc_subheader_btn.active {
-	background-color: #1992d1 !important;
+	background-color: #0f92d1 !important;
 	color: #fff !important;
 }
 
@@ -57,11 +80,11 @@
 .calc_val {
 	display: block;
 	font-size: 24px;
-	color: #dfdfdf;
+	color: #e1e1e1;
 }
 
 .calc_val.active {
-	color: #ff8c00;
+	color: #f68c20;
 }
 
 .calc_val_label {
@@ -72,7 +95,7 @@
 
 .calc_label {
 	font-size: 12px;
-	color: #1992d1;
+	color: #0f92d1;
 }
 
 .calc_label_col {
@@ -83,9 +106,16 @@
 .calc_input {
 	padding-left: 10px;
 	background-color: #fafafa;
-	-webkit-box-shadow: 0px 0px 4px -2px #000;
-	-moz-box-shadow: 0px 0px 4px -2px #000;
-	box-shadow: 0px 0px 4px -2px #000;
+	color: #7e7e7e;
+	/*border: 1px solid #7e7e7e !important;*/
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	
+	-webkit-box-shadow: 0px 0px 3px -1px #000;
+	-moz-box-shadow: 0px 0px 3px -1px #000;
+	box-shadow: 0px 0px 3px -1px #000;
+	
 }
 
 .calc_clear_btn {
@@ -100,7 +130,7 @@
 }
 
 .calc_calculate_btn {
-	background-color: #1992d1 !important;
+	background-color: #0f92d1 !important;
 	color: #fff !important;
 	height: 40px;
 	min-height: 40px;
@@ -108,4 +138,44 @@
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
+}
+
+.slice-text {
+	font-size: 14px;
+	/*font-weight: bold;*/
+}
+
+.col-offset-17 {
+	margin-left: 17%;
+}
+
+.calc_brown_title_text {
+	color: #7e7e7e;
+}
+
+.graph_title {
+	font-size: 16px;
+}
+
+.input_container {
+	position: relative;
+	color: #e1e1e1 !important;
+}
+
+.input_container.active {
+	color: #7e7e7e !important;
+}
+
+.prepend {
+	position: absolute;
+	top: 13px;
+	left: 6px;
+	z-index: 2;
+}
+
+.append {
+	position: absolute;
+	top: 13px;
+	right: 6px;
+	z-index: 2;
 }

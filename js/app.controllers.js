@@ -20,23 +20,35 @@
 
           $scope.ltv = {
             // Inputs
-            rpc: null,  // Revenue per Conversion
-            cpc: null,    // COGS per Conversion
-            vcpc: null,   // Variable Cost per Conversion
-            crpr: null,   // Customer Repurchase Rate
-            crfr: null,   // Customer Referral Rate
-            cr: null,     // Conversion Rate
+            rpc:    null,   // Revenue per Conversion
+            cpc:    null,   // COGS per Conversion
+            vcpc:   null,   // Variable Cost per Conversion
+            crpr:   null,   // Customer Repurchase Rate
+            crfr:   null,   // Customer Referral Rate
+            cr:     null,   // Conversion Rate
 
             // Precision-only inputs
-            acp: null,    // Annual Customer Purchases
-            lcr: null,    // Lifetime Customer Referrals
-            clt: null,    // Customer Lifetime
-            rrr: null,    // Required Rate of Return
+            acp:    null,   // Annual Customer Purchases
+            lcr:    null,   // Lifetime Customer Referrals
+            clt:    null,   // Customer Lifetime
+            rrr:    null,   // Required Rate of Return
 
             // Outputs
-            cltv: 0,  // Customer Life Time Value
-            vltv: 0,  // Visitor Life Time Value
-            tor: 0,   // Life Time Value to Revenue
+            cltv:   0,      // Customer Life Time Value
+            vltv:   0,      // Visitor Life Time Value
+            tor:    0,      // Life Time Value to Revenue
+            currv:  0,      // Current Value
+            futv:   0,      // Future Value
+            series: [
+              {
+                  name:   'Current Value',
+                  value:  this.currv
+                },
+                {
+                  name:   'Future Value',
+                  value:  this.futv
+                }
+            ],
 
             getCltv: function() {
               var that = this.calcPrepClone(),
@@ -101,8 +113,6 @@
               } else {
                 $scope.absoluteFail = false;
               }
-
-              console.log($scope.absoluteFail);
             },
 
             compute: function() {
@@ -112,8 +122,34 @@
               this.getCltv();
               this.getVltv();
               this.getTor();
+              this.getCurrentValue();
+              this.getFutureValue();
 
+              this.drawPie();
               $scope.calculated = true;
+            },
+
+            drawPie: function () {
+              this.series = [
+                {
+                  name:   'Current Value',
+                  value:  this.currv
+                },
+                {
+                  name:   'Future Value',
+                  value:  this.futv
+                }
+              ];
+            },
+
+            getCurrentValue: function () {
+              this.currv = (this.rpc - this.cpc - this.vcpc);
+              return this.currv;
+            },
+
+            getFutureValue: function () {
+              this.futv = (this.cltv - this.currv);
+              return this.futv;
             },
 
             calcPrepClone: function() {
@@ -159,6 +195,18 @@
               cltv: 0,  // Customer Life Time Value
               vltv: 0,  // Visitor Life Time Value
               tor:  0,   // Life Time Value to Revenue
+              currv:0,
+              futv: 0,
+              series: [
+                {
+                    name:   'Current Value',
+                    value:  this.currv
+                  },
+                  {
+                    name:   'Future Value',
+                    value:  this.futv
+                  }
+              ]
             };
 
           };

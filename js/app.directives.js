@@ -217,8 +217,12 @@
 					                .attr("d", arc);                                    //this creates the actual SVG path using the associated data (pie) with the arc drawing function
 								
 					            arcs.append('text')
-					            	.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-									.attr("dy", ".35em")
+					            	.attr("transform", function(d) {
+					            		var centroid = arc.centroid(d);
+					            			centroid[0] = centroid[0] / 1.5;
+					            		return "translate(" + centroid + ")";
+					            	})
+									// .attr("dy", ".35em")
 									.style("text-anchor", "middle")
 									.attr('class', 'slice-text')
 									.text(function(d, i) { return data[i].label; });

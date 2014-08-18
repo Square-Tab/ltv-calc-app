@@ -116,6 +116,9 @@
             },
 
             compute: function() {
+              if ( !$scope.lifetimeValue.$valid ) // Don't calc if form is not valid
+                return false;
+
               // Absolute rule
               if(this.check() && $scope.precisionType === 'precision')
                 this.absolute();

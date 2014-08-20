@@ -15,10 +15,11 @@
       <!-- Ionic/Angularjs js -->
       <script src="lib/ionic/js/ionic.bundle.js"></script>
       <!-- cordova script (this will be a 404 during development) -->
-      <script src="cordova.js"></script>
+      <script src="phonegap.js"></script>
       <!-- Vendor/Utilities -->
       <script src="js/vendor/jquery.min.js"></script>
       <script src="js/vendor/shame.js"></script>
+      <script src="js/vendor/d3.v3.min.js"></script>
       <!-- LTV Calculator -->
       <script src="js/app.js"></script>
       <script src="js/app.filters.js"></script>
@@ -33,16 +34,16 @@
       <div id="attritionCalcWrapper" >
         <!-- Header -->
         <ion-header-bar align-title="center" class="calc_header">
-          <h1 class="title">Lifetime Value</h1>
+          <h1 class="title font_montserrat">Lifetime Value</h1>
         </ion-header-bar>
         <!--/ Header -->
 
         <!-- SubHeader -->
         <ion-header-bar class="bar-subheader calc_subheader">
           <div class="row">
-            <div class="col-80 col-offset-10">
+            <div class="col col-80 col-offset-10">
 
-              <div class="button-bar">
+              <div class="button-bar padding-horizontal">
                 <a
                   data-ng-click="selectType('quick')"
                   class="button calc_subheader_btn left"
@@ -61,146 +62,173 @@
         <!--/ SubHeader -->
 
         <!-- Clients Content -->
-        <ion-content>
+        <ion-content class="calc_content">
           
-          <!-- Results -->
           <div class="row">
-            <div class="col">
-              
-              <div class="row">
-                <div class="col-50 col-offset-25 text-center">
-                  <span class="calc_val" data-ng-class="{active: calculated}">
-                    <span class="calc_val_currency">$</span>
-                    <span>{{ltv.cltv | numCheck:2}}</span>
-                  </span>
-                  <span class="calc_val_label">Customer LTV</span>
-                </div>
-              </div>
+            <div class="col col-90 col-offset-5">
 
-              <div class="row">
-                <div class="col  text-center">
-                  <span class="calc_val" data-ng-class="{active: calculated}">{{ltv.tor | numCheck:2}}</span>
-                  <span class="calc_val_label">LTV to Revenue</span>
+              <!-- Donut Pie Chart -->
+                <div class="row">
+                  <div class="col">
+                  <!-- 
+                    <div class="row">
+                      <div class="col text-center">
+                        <h4 class="calc_brown_title_text font_montserrat graph_title">Future value & current value</h4>
+                      </div>
+                    </div>
+                  -->
+
+                    <div class="col col-50">
+                      <donutpie id="donutpie" series="ltv.series" class="donutpie" />
+                    </div>
+
+                  </div>
                 </div>
-                <div class="col  text-center">
-                  <span class="calc_val" data-ng-class="{active: calculated}">
-                    <span class="calc_val_currency">$</span>
-                    <span>{{ltv.vltv | numCheck:2}}</span>
-                  </span>
-                  <span class="calc_val_label">Visitor LTV</span>
+              <!--/ Donut Pie Chart -->
+
+              <!-- Results -->
+                <div class="row">
+                  <div class="col text-center">
+                    <span class="calc_val" data-ng-class="{active: calculated}">
+                      <span class="calc_val_currency">$</span>
+                      <span>{{ltv.cltv | numCheck:2}}</span>
+                    </span>
+                    <span class="calc_val_label">Customer LTV</span>
+                  </div>
                 </div>
-              </div>
+
+                <div class="row">
+                  <div class="col text-center">
+                    <span class="calc_val" data-ng-class="{active: calculated}">{{ltv.tor | numCheck:2}}</span>
+                    <span class="calc_val_label">LTV to Revenue</span>
+                  </div>
+                  <div class="col text-center">
+                    <span class="calc_val" data-ng-class="{active: calculated}">
+                      <span class="calc_val_currency">$</span>
+                      <span>{{ltv.vltv | numCheck:2}}</span>
+                    </span>
+                    <span class="calc_val_label">Visitor LTV</span>
+                  </div>
+                </div>
+
+              <!--/ Results -->
+
+              <form name="$parent.lifetimeValue" novalidate class="font_opensans">
+                <div class="row">
+                  <div class="col col-67 calc_label_col padding-vertical">
+                    <label for="rpc" class="calc_label">Revenue per conversion</label>
+                  </div>
+                  <div class="col input_container" data-ng-class="{active: ltv.rpc != null}">
+                    <input id="rpc" name="rpc" type="number" data-ng-model="ltv.rpc" class="calc_input" data-allowed-characters="[\d\.,\b\t]" data-ng-required="true" />
+                    <span class="prepend">$</span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col col-67 calc_label_col padding-vertical">
+                    <label for="cpc" class="calc_label">COGS per conversion</label>
+                  </div>
+                  <div class="col input_container" data-ng-class="{active: ltv.cpc != null}">
+                    <input id="cpc" name="cpc" type="number" class="calc_input" data-ng-model="ltv.cpc" data-allowed-characters="[\d\.,\b\t]" data-ng-required="true" />
+                    <span class="prepend">$</span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col col-67 calc_label_col padding-vertical">
+                    <label for="vcpc" class="calc_label">Variable cost per conversion</label>
+                  </div>
+                  <div class="col input_container" data-ng-class="{active: ltv.vcpc != null}">
+                    <input id="vcpc" name="vcpc" type="number" data-ng-model="ltv.vcpc" class="calc_input" data-allowed-characters="[\d\.,\b\t]" data-ng-required="true" />
+                    <span class="append">%</span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col col-67 calc_label_col padding-vertical">
+                    <label for="crpr" class="calc_label">Customer repurchase rate</label>
+                  </div>
+                  <div class="col input_container" data-ng-class="{active: ltv.crpr != null}">
+                    <input id="crpr" name="crpr" type="number" data-ng-model="ltv.crpr" class="calc_input" step=".1" data-min-value="0" data-max-value="100" data-allowed-characters="[\d\.,\b\t]" data-ng-required="true" />
+                    <span class="append">%</span>
+                  </div>
+                </div>
+
+                <div class="row" data-ng-if="precisionType == 'precise'">
+                  <div class="col col-67 calc_label_col padding-vertical">
+                    <label for="acp" class="calc_label">Annual customer purchases</label>
+                  </div>
+                  <div class="col">
+                    <input id="acp" name="acp" type="number" data-ng-model="ltv.acp" class="calc_input" data-min-value="0" data-allowed-characters="[\d\b\t]" data-ng-required="true" />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col col-67 calc_label_col padding-vertical">
+                    <label for="crfr" class="calc_label">Customer referral rate</label>
+                  </div>
+                  <div class="col input_container" data-ng-class="{active: ltv.crfr != null}">
+                    <input id="crfr" name="crfr" type="number" data-ng-model="ltv.crfr" class="calc_input" step=".1" data-min-value="0" data-max-value="100" data-allowed-characters="[\d\.,\b\t]" data-ng-required="true" />
+                    <span class="append">%</span>
+                  </div>
+                </div>
+
+                <div class="row" data-ng-if="precisionType == 'precise' && ltv.crfr > 0">
+                  <div class="col col-67 calc_label_col padding-vertical">
+                    <label for="lcr" class="calc_label">Lifetime customer referrals</label>
+                  </div>
+                  <div class="col">
+                    <input id="lcr" name="lrc" type="number" data-ng-model="ltv.lcr" class="calc_input" data-allowed-characters="[\d\.,\b\t]" data-ng-required="true" />
+                  </div>
+                </div>
+
+                <div class="row" data-ng-if="precisionType == 'precise'">
+                  <div class="col col-67 calc_label_col padding-vertical">
+                    <label for="clt" class="calc_label">Customer lifetime (months)</label>
+                  </div>
+                  <div class="col">
+                    <input id="clt" name="clt" type="number" data-ng-model="ltv.clt" class="calc_input" data-allowed-characters="[\d\.,\b\t]" data-ng-required="true" />
+                  </div>
+                </div>
+
+                <div class="row" data-ng-if="precisionType == 'precise'">
+                  <div class="col col-67 calc_label_col padding-vertical">
+                    <label for="rrr" class="calc_label">Required rate of return</label>
+                  </div>
+                  <div class="col input_container" data-ng-class="{active: ltv.cr != null}">
+                    <input id="rrr" name="rrr" type="number" data-ng-model="ltv.rrr" class="calc_input" step=".1" data-min-value="0" data-max-value="100" data-allowed-characters="[\d\.,\b\t]" data-ng-required="true" />
+                    <span class="append">%</span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col col-67 calc_label_col padding-vertical">
+                    <label for="cr" class="calc_label">Conversion rate (Opt)</label>
+                  </div>
+                  <div class="col input_container" data-ng-class="{active: ltv.cr != null}">
+                    <input id="cr" name="cr" type="number" data-ng-model="ltv.cr" class="calc_input" step=".1" data-min-value="0" data-max-value="100" data-allowed-characters="[\d\.,\b\t]" />
+                    <span class="append">%</span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col col-90 col-offset-10">
+                    <div class="row">
+                      <div class="col">
+                        <button type="button" class="button button-block calc_clear_btn font_opensans" data-ng-click="clear()">Clear</button>
+                      </div>
+                      <div class="col">
+                        <button type="button" class="button button-block calc_calculate_btn font_opensans" data-ng-click="compute()">Calculate</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+
 
             </div>
           </div>
-          <!--/ Results -->
-
-          <form name="$parent.lifetimeValue" novalidate>
-            <div class="row">
-              <div class="col-67 calc_label_col">
-                <label for="rpc" class="calc_label">Revenue per conversion</label>
-              </div>
-              <div class="col">
-                <input id="rpc" name="rpc" type="number" data-ng-model="ltv.rpc" class="calc_input" data-allowed-characters="[\d\.,\b\t]" />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-67 calc_label_col">
-                <label for="cpc" class="calc_label">COGS per conversion</label>
-              </div>
-              <div class="col">
-                <input id="cpc" name="cpc" type="number" class="calc_input" data-ng-model="ltv.cpc" data-allowed-characters="[\d\.,\b\t]" />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-67 calc_label_col">
-                <label for="vcpc" class="calc_label">Variable cost per conversion</label>
-              </div>
-              <div class="col">
-                <input id="vcpc" name="vcpc" type="number" data-ng-model="ltv.vcpc" class="calc_input" data-allowed-characters="[\d\.,\b\t]" />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-67 calc_label_col">
-                <label for="crpr" class="calc_label">Customer repurchase rate</label>
-              </div>
-              <div class="col">
-                <input id="crpr" name="crpr" type="number" data-ng-model="ltv.crpr" class="calc_input" step=".1" data-min-value="0" data-max-value="100" data-allowed-characters="[\d\.,\b\t]" />
-              </div>
-            </div>
-
-            <div class="row" data-ng-if="precisionType == 'precise'">
-              <div class="col-67 calc_label_col">
-                <label for="acp" class="calc_label">Annual customer purchases</label>
-              </div>
-              <div class="col">
-                <input id="acp" name="acp" type="number" data-ng-model="ltv.acp" class="calc_input" data-min-value="0" data-allowed-characters="[\d\b\t]" />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-67 calc_label_col">
-                <label for="crfr" class="calc_label">Customer referral rate</label>
-              </div>
-              <div class="col">
-                <input id="crfr" name="crfr" type="number" data-ng-model="ltv.crfr" class="calc_input" step=".1" data-min-value="0" data-max-value="100" data-allowed-characters="[\d\.,\b\t]" />
-              </div>
-            </div>
-
-            <div class="row" data-ng-if="precisionType == 'precise' && ltv.crfr > 0">
-              <div class="col-67 calc_label_col">
-                <label for="lcr" class="calc_label">Lifetime customer referrals</label>
-              </div>
-              <div class="col">
-                <input id="lcr" name="lrc" type="number" data-ng-model="ltv.lcr" class="calc_input" data-allowed-characters="[\d\.,\b\t]" />
-              </div>
-            </div>
-
-            <div class="row" data-ng-if="precisionType == 'precise'">
-              <div class="col-67 calc_label_col">
-                <label for="clt" class="calc_label">Customer lifetime (months)</label>
-              </div>
-              <div class="col">
-                <input id="clt" name="clt" type="number" data-ng-model="ltv.clt" class="calc_input" data-allowed-characters="[\d\.,\b\t]" />
-              </div>
-            </div>
-
-            <div class="row" data-ng-if="precisionType == 'precise'">
-              <div class="col-67 calc_label_col">
-                <label for="rrr" class="calc_label">Required rate of return</label>
-              </div>
-              <div class="col" class="calc_label">
-                <input id="rrr" name="rrr" type="number" data-ng-model="ltv.rrr" class="calc_input" step=".1" data-min-value="0" data-max-value="100" data-allowed-characters="[\d\.,\b\t]" />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-67 calc_label_col">
-                <label for="cr" class="calc_label">Conversion rate (Opt)</label>
-              </div>
-              <div class="col">
-                <input id="cr" name="cr" type="number" data-ng-model="ltv.cr" class="calc_input" step=".1" data-min-value="0" data-max-value="100" data-allowed-characters="[\d\.,\b\t]" />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-90 col-offset-10">
-                <div class="row">
-                  <div class="col">
-                    <button type="button" class="button button-block button-stable calc_clear_btn" data-ng-click="clear()">Clear</button>
-                  </div>
-                  <div class="col">
-                    <button type="button" class="button button-block button-positive calc_calculate_btn" data-ng-click="compute()">Calculate</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </form>
-
         </ion-content>
         <!--/ LTVCalculator Content -->
 

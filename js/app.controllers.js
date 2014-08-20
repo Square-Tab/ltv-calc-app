@@ -20,23 +20,46 @@
 
           $scope.ltv = {
             // Inputs
-            rpc: null,  // Revenue per Conversion
-            cpc: null,    // COGS per Conversion
-            vcpc: null,   // Variable Cost per Conversion
-            crpr: null,   // Customer Repurchase Rate
-            crfr: null,   // Customer Referral Rate
-            cr: null,     // Conversion Rate
+            rpc:    null,   // Revenue per Conversion
+            cpc:    null,   // COGS per Conversion
+            vcpc:   null,   // Variable Cost per Conversion
+            crpr:   null,   // Customer Repurchase Rate
+            crfr:   null,   // Customer Referral Rate
+            cr:     null,   // Conversion Rate
 
             // Precision-only inputs
-            acp: null,    // Annual Customer Purchases
-            lcr: null,    // Lifetime Customer Referrals
-            clt: null,    // Customer Lifetime
-            rrr: null,    // Required Rate of Return
+            acp:    null,   // Annual Customer Purchases
+            lcr:    null,   // Lifetime Customer Referrals
+            clt:    null,   // Customer Lifetime
+            rrr:    null,   // Required Rate of Return
 
             // Outputs
-            cltv: 0,  // Customer Life Time Value
-            vltv: 0,  // Visitor Life Time Value
-            tor: 0,   // Life Time Value to Revenue
+            cltv:   0,      // Customer Life Time Value
+            vltv:   0,      // Visitor Life Time Value
+            tor:    0,      // Life Time Value to Revenue
+            currv:  0,      // Current Value
+            futv:   0,      // Future Value
+            series: [
+              {
+                name:   '',
+                value:  100
+              }
+              // {
+              //     name:   'Uno',
+              //     value:  50,
+              //     color: '#f00'
+              // },
+              // {
+              //     name:   'Dos',
+              //     value:  40,
+              //     color: '#0f0'
+              // },
+              // {
+              //     name:   'Tres',
+              //     value:  10,
+              //     color: '#00f'
+              // }
+            ],
 
             getCltv: function() {
               var that = this.calcPrepClone(),
@@ -101,19 +124,46 @@
               } else {
                 $scope.absoluteFail = false;
               }
-
-              console.log($scope.absoluteFail);
             },
 
             compute: function() {
+              if ( !$scope.lifetimeValue.$valid ) // Don't calc if form is not valid
+                return false;
+
               // Absolute rule
               if(this.check() && $scope.precisionType === 'precision')
                 this.absolute();
               this.getCltv();
               this.getVltv();
               this.getTor();
+              this.getCurrentValue();
+              this.getFutureValue();
 
+              this.drawPie();
               $scope.calculated = true;
+            },
+
+            drawPie: function () {
+              this.series = [
+                {
+                  name:   'Current',
+                  value:  this.currv
+                },
+                {
+                  name:   'Future',
+                  value:  this.futv
+                }
+              ];
+            },
+
+            getCurrentValue: function () {
+              this.currv = (this.rpc - this.cpc - this.vcpc);
+              return this.currv;
+            },
+
+            getFutureValue: function () {
+              this.futv = (this.cltv - this.currv);
+              return this.futv;
             },
 
             calcPrepClone: function() {
@@ -130,7 +180,7 @@
           };
 
           $scope.compute = function () {
-            this.ltv.compute();
+            $scope.ltv.compute();
           };
 
           $scope.selectType = function(type) {
@@ -140,7 +190,7 @@
           $scope.clear = function() {
             $scope.calculated = false;
 
-             $scope.ltv = {
+             $scope.ltv = angular.extend($scope.ltv, {
               // Inputs
               rpc:  null,  // Revenue per Conversion
               cpc:  null,    // COGS per Conversion
@@ -159,7 +209,15 @@
               cltv: 0,  // Customer Life Time Value
               vltv: 0,  // Visitor Life Time Value
               tor:  0,   // Life Time Value to Revenue
-            };
+              currv:0,
+              futv: 0,
+              series: [
+                // {
+                //   name:   '',
+                //   value:  0
+                // }
+              ]
+            });
 
           };
 

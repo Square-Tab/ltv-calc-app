@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.smartcalculator113452" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.squaretab.tools.ltvcalculator" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://cordova.apache.org/ns/1.0">
   <name>Life Time Value Calculator</name>
   <description>
     A Netmark lifetime value calculator.    
@@ -29,6 +29,10 @@
   <!-- Deny access to external resources -->
   <access />
 
+  <!-- None permissions required -->
+  <preference name="permissions" value="none" />
+
+  <!-- Features -->
   <preference name="phonegap-version" value="3.5.0" />
   <preference name="orientation" value="portrait" /> <!-- all: default means both landscape and portrait are enabled -->
   <preference name="target-device" value="universal" /> <!-- all: possible values handset, tablet, or universal -->

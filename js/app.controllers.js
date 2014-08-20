@@ -45,19 +45,12 @@
                 value:  100
               }
               // {
-              //     name:   'Uno',
-              //     value:  50,
-              //     color: '#f00'
+              //     name:   'Current',
+              //     value:  50
               // },
               // {
-              //     name:   'Dos',
-              //     value:  40,
-              //     color: '#0f0'
-              // },
-              // {
-              //     name:   'Tres',
-              //     value:  10,
-              //     color: '#00f'
+              //     name:   'Future',
+              //     value:  40
               // }
             ],
 

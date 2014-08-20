@@ -4,12 +4,12 @@
     id="com.squaretab.tools.ltvcalculator"
     version     = "0.0.1" >
 
-    <name>Life Time Value Calculator</name>
+    <name>Lifetime Value Calculator</name>
     <description>
-    A Netmark lifetime value calculator.    
+    A SquareTab calculator to identify the lifetime value of a relationship with a customer. LTV is a prediction of the net profit to your business. Understanding the value of each customer is critical for your success. Calculate your customer LTV now!
     </description>
-    <author email="luiscarlosjayk@gmail.com" href="http://luiscarlosjayk.com">
-      Luis Carlos Osorio Jayk
+    <author email="support@squaretab.com" href="http://squaretab.com">
+      SquareTab Developers
     </author>
     <content src="index.html"/>
 

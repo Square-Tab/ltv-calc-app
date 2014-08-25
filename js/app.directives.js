@@ -173,8 +173,8 @@
 						var	width 		= $('#' + $attrs.id).parent().parent().width();
 							height 		= width / 1.5;
 
-						var radius 			= Math.min(width, height) / 2.5,
-							innerRadius		= ( radius / 2 ),
+						var radius 			= ( width + height ) / 6, //Math.min(width, height) / 2.5,
+							innerRadius		= ( width + height ) / 8, //( radius / 2 ),
 							textOffset 		= 14,
 							tweenDuration 	= 500,
 							lines,
@@ -262,7 +262,7 @@
 							    return (element.value > 0);
 						  	}
 
-  							// oldPieData 	= filteredPieData; // Debug only
+  							oldPieData 	= filteredPieData; // Debug only
 
 						  	// Filtereted Data
 						  	if (filteredPieData.length > 0 && oldPieData.length > 0) {

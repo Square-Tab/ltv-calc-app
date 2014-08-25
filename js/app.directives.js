@@ -262,7 +262,7 @@
 							    return (element.value > 0);
 						  	}
 
-  							oldPieData 	= filteredPieData; // Debug only
+  							// oldPieData 	= filteredPieData; // Debug only
 
 						  	// Filtereted Data
 						  	if (filteredPieData.length > 0 && oldPieData.length > 0) {
